@@ -33,9 +33,9 @@ android {
 
 dependencies {
 
-    implementation(libs.appcompat)
+    implementation ("androidx.appcompat:appcompat:1.7.0")
     implementation(libs.material)
-    implementation(libs.activity)
+    implementation ("androidx.activity:activity:1.9.3")
     implementation(libs.constraintlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

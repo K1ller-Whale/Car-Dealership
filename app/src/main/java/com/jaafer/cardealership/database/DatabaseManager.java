@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import com.jaafer.cardealership.utils.SecurityUtils;
+import java.util.UUID;
 
 import com.jaafer.cardealership.models.Car;
 
@@ -18,56 +20,137 @@ public class DatabaseManager {
     }
 
     public void open() {
-        // Use this to trigger onCreate if DB doesn't exist
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        dbHelper.getWritableDatabase();
     }
 
-    // Method to get all cars for the list
     public List<Car> getAllCars() {
         List<Car> carList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        // Select only unsold cars
         Cursor cursor = db.rawQuery("SELECT * FROM cars WHERE is_sold = 'N'", null);
 
         if (cursor.moveToFirst()) {
             do {
-                // Map DB columns to Object
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow("car_id"));
                 String make = cursor.getString(cursor.getColumnIndexOrThrow("manufacturer"));
                 String model = cursor.getString(cursor.getColumnIndexOrThrow("model_name"));
+                int year = cursor.getInt(cursor.getColumnIndexOrThrow("car_year"));
+                String color = cursor.getString(cursor.getColumnIndexOrThrow("color"));
                 double price = cursor.getDouble(cursor.getColumnIndexOrThrow("selling_price"));
+                int mileage = cursor.getInt(cursor.getColumnIndexOrThrow("mileage"));
+                String trans = cursor.getString(cursor.getColumnIndexOrThrow("transmission_type"));
                 String cond = cursor.getString(cursor.getColumnIndexOrThrow("car_condition"));
+                String vin = cursor.getString(cursor.getColumnIndexOrThrow("vin_number"));
+                String notes = cursor.getString(cursor.getColumnIndexOrThrow("notes"));
                 String img = cursor.getString(cursor.getColumnIndexOrThrow("image_uri"));
                 int fav = cursor.getInt(cursor.getColumnIndexOrThrow("is_favorite"));
 
-                carList.add(new Car(id, make, model, price, cond, img, fav));
+                carList.add(new Car(id, make, model, year, color, price, mileage, trans, cond, vin, notes, img, fav));
             } while (cursor.moveToNext());
         }
         cursor.close();
         return carList;
     }
 
-    // Run this once to fill DB with data
+
+    public boolean checkUserCredentials(String username, String password) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String hashedPassword = SecurityUtils.hashPassword(password);
+
+        // Query: Check if username exists and password matches hash
+        String query = "SELECT * FROM system_users WHERE username = ? AND password_hash = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{username, hashedPassword});
+
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
+    }
+
+    public String getUserRole(String username) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String role = "";
+        Cursor cursor = db.rawQuery("SELECT user_role FROM system_users WHERE username = ?", new String[]{username});
+        if (cursor.moveToFirst()) {
+            role = cursor.getString(0);
+        }
+        cursor.close();
+        return role;
+    }
+
+    public boolean isUsernameTaken(String username) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT user_id FROM system_users WHERE username = ?", new String[]{username});
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
+    }
+    public boolean registerUser(String username, String password, String role) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues empValues = new ContentValues();
+            empValues.put("employee_name", username); // Use username as name for now
+            empValues.put("national_id", UUID.randomUUID().toString().substring(0, 15)); // Random ID
+            empValues.put("phone_number", "0000000000");
+            empValues.put("base_salary", 0);
+
+            long empId = db.insertOrThrow("employees", null, empValues);
+
+            // 2. Create User record linked to that employee
+            ContentValues userValues = new ContentValues();
+            userValues.put("username", username);
+            userValues.put("password_hash", SecurityUtils.hashPassword(password));
+            userValues.put("user_role", role);
+            userValues.put("employee_id", empId);
+            userValues.put("is_active", "Y");
+
+            db.insertOrThrow("system_users", null, userValues);
+
+            db.setTransactionSuccessful();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.endTransaction();
+        }
+    }
     public void insertDummyData() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        // Check if empty first
         Cursor c = db.rawQuery("SELECT count(*) FROM cars", null);
         c.moveToFirst();
         if (c.getInt(0) == 0) {
-            // Add a car
             ContentValues values = new ContentValues();
             values.put("manufacturer", "BMW");
             values.put("model_name", "X5");
             values.put("car_year", 2022);
             values.put("color", "Black");
+            values.put("engine_capacity", 3.0);
+            values.put("transmission_type", "Automatic");
             values.put("car_condition", "Used");
             values.put("selling_price", 55000);
+            values.put("mileage", 12000);
+            values.put("vin_number", "123ABC456DEF789GH");
             values.put("is_sold", "N");
+            values.put("notes", "Excellent condition, one previous owner.");
             values.put("image_uri", "https://upload.wikimedia.org/wikipedia/commons/1/1d/BMW_X5_%28G05%29_IMG_3659.jpg");
             db.insert("cars", null, values);
 
-            // Add another car... (repeat for 4-5 cars)
+            values.clear();
+            values.put("manufacturer", "Toyota");
+            values.put("model_name", "Camry");
+            values.put("car_year", 2024);
+            values.put("color", "White");
+            values.put("engine_capacity", 2.5);
+            values.put("transmission_type", "CVT");
+            values.put("car_condition", "New");
+            values.put("selling_price", 28000);
+            values.put("mileage", 0);
+            values.put("vin_number", "987ZYX654CBA321");
+            values.put("is_sold", "N");
+            values.put("notes", "Brand new, zero meter.");
+            values.put("image_uri", "https://upload.wikimedia.org/wikipedia/commons/a/ac/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg");
+            db.insert("cars", null, values);
         }
         c.close();
     }

@@ -2,4 +2,17 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="pale_lavender">#E9EAF5</color>  <!-- Backgrounds -->
+    <color name="periwinkle">#BFC0E2</color>     <!-- Cards / Input Fields -->
+    <color name="cool_purple">#9597CF</color>    <!-- Secondary Accents -->
+    <color name="slate_purple">#6D70BA</color>   <!-- Icons -->
+    <color name="royal_purple">#474B9E</color>   <!-- Primary Buttons -->
+    <color name="deep_indigo">#2B2D65</color>    <!-- Text Headers -->
+    <color name="midnight_blue">#111231</color>  <!-- Text Body / Nav Bar -->
+
+    <color name="colorPrimary">@color/royal_purple</color>
+    <color name="colorPrimaryDark">@color/deep_indigo</color>
+    <color name="colorAccent">@color/slate_purple</color>
+    <color name="colorBackground">@color/pale_lavender</color>
 </resources>
