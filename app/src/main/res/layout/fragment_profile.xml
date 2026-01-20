@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pale_lavender">
+
+    <View
+        android:id="@+id/viewHeaderBg"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@color/royal_purple"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imgProfile"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/ic_person"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvProfileName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="User Name"
+        android:textColor="@color/deep_indigo"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgProfile" />
+
+    <TextView
+        android:id="@+id/tvSettingsHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/profile_settings"
+        android:textAllCaps="true"
+        android:textColor="@color/slate_purple"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvProfileName" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/tvSettingsHeader">
+
+        <com.jaafer.cardealership.components.ProfileOptionView
+            android:id="@+id/optTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:optionIcon="@drawable/ic_home"
+            app:optionTitle="@string/action_theme" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/pale_lavender" />
+
+        <com.jaafer.cardealership.components.ProfileOptionView
+            android:id="@+id/optLanguage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:optionIcon="@drawable/ic_person"
+            app:optionTitle="@string/action_language" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/pale_lavender" />
+
+        <com.jaafer.cardealership.components.ProfileOptionView
+            android:id="@+id/optLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:optionIcon="@drawable/ic_arrow_forward"
+            app:optionTitle="@string/action_logout" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
