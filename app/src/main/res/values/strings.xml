@@ -20,7 +20,6 @@
     <string name="role_sales">Sales Staff</string>
     <string name="btn_logout">Log Out</string>
     <string name="welcome_message">Welcome, %1$s!</string>
-    <string name="role_display">Role: %1$s</string>
     <string name="nav_home">Home</string>
     <string name="nav_history">History</string>
     <string name="nav_profile">Profile</string>
@@ -47,4 +46,7 @@
     <string name="btn_buy_now">Buy Now</string>
     <string name="msg_confirm_buy">Confirm purchase of %s?</string>
     <string name="msg_buy_success">Congratulations! You own this car.</string>
+    <string name="hint_national_id">National ID</string>
+    <string name="hint_phone_number">Phone Number</string>
+
 </resources>
