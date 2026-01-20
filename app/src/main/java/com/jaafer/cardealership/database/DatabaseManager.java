@@ -5,17 +5,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.jaafer.cardealership.models.Car;
 import com.jaafer.cardealership.models.User;
 import com.jaafer.cardealership.utils.SecurityUtils;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.UUID;
-
-import com.jaafer.cardealership.models.Car;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class DatabaseManager {
     private final DatabaseHelper dbHelper;
@@ -28,12 +25,15 @@ public class DatabaseManager {
         dbHelper.getWritableDatabase();
     }
 
-    public User retrieveUserProfileInfo(int userID) {
+    public User retrieveUserProfileInfo(int systemUserID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         User user = null;
 
-        String query = "SELECT * FROM customers WHERE customer_id = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userID)});
+        String query = "SELECT c.* FROM customers c " +
+                "INNER JOIN system_users u ON c.customer_id = u.customer_id " +
+                "WHERE u.user_id = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(systemUserID)});
 
         if (cursor.moveToFirst()) {
             int id = cursor.getInt(cursor.getColumnIndexOrThrow("customer_id"));
@@ -47,6 +47,16 @@ public class DatabaseManager {
 
         cursor.close();
         return user;
+    }
+    public int getCustomerIdFromUserId(int systemUserID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        int customerId = -1;
+        Cursor cursor = db.rawQuery("SELECT customer_id FROM system_users WHERE user_id = ?", new String[]{String.valueOf(systemUserID)});
+        if (cursor.moveToFirst()) {
+            customerId = cursor.getInt(0);
+        }
+        cursor.close();
+        return customerId;
     }
 
     public boolean buyCar(int carID, int customerID) {
@@ -71,6 +81,7 @@ public class DatabaseManager {
             if (rowsAffected == 0) {
                 return false;
             }
+
             ContentValues contractValues = new ContentValues();
             contractValues.put("contract_number", "CNT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
             contractValues.put("customer_id", customerID);
@@ -94,16 +105,17 @@ public class DatabaseManager {
     }
 
     public List<Car> getFiveCars() {
-        List<Car> allCars = new ArrayList<Car>(getAllCars());
+        List<Car> allCars = new ArrayList<>(getAllCars());
         Collections.shuffle(allCars);
 
-        return allCars.subList(0, 5);
+        int endIndex = Math.min(allCars.size(), 5);
+        return allCars.subList(0, endIndex);
     }
 
-    public List<Car> getAllCarsByCustomerID(String customerId) {
-        List<Car> carHistory = new ArrayList<Car>();
+    public List<Car> getAllCarsByCustomerID(int customerId) {
+        List<Car> carHistory = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String query = "SELECT c.* FROM " + "cars" + " c " +
+        String query = "SELECT c.* FROM cars c " +
                 "INNER JOIN sales_contracts sc ON c.car_id = sc.car_id " +
                 "WHERE sc.customer_id = ?";
 
@@ -111,21 +123,7 @@ public class DatabaseManager {
 
         if (cursor.moveToFirst()) {
             do {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow("car_id"));
-                String make = cursor.getString(cursor.getColumnIndexOrThrow("manufacturer"));
-                String model = cursor.getString(cursor.getColumnIndexOrThrow("model_name"));
-                int year = cursor.getInt(cursor.getColumnIndexOrThrow("car_year"));
-                String color = cursor.getString(cursor.getColumnIndexOrThrow("color"));
-                double price = cursor.getDouble(cursor.getColumnIndexOrThrow("selling_price"));
-                int mileage = cursor.getInt(cursor.getColumnIndexOrThrow("mileage"));
-                String trans = cursor.getString(cursor.getColumnIndexOrThrow("transmission_type"));
-                String cond = cursor.getString(cursor.getColumnIndexOrThrow("car_condition"));
-                String vin = cursor.getString(cursor.getColumnIndexOrThrow("vin_number"));
-                String notes = cursor.getString(cursor.getColumnIndexOrThrow("notes"));
-                String img = cursor.getString(cursor.getColumnIndexOrThrow("image_uri"));
-                int fav = cursor.getInt(cursor.getColumnIndexOrThrow("is_favorite"));
-
-                carHistory.add(new Car(id, make, model, year, color, price, mileage, trans, cond, vin, notes, img, fav));
+                carHistory.add(mapCursorToCar(cursor));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -133,32 +131,35 @@ public class DatabaseManager {
     }
 
     public List<Car> getAllCars() {
-        List<Car> carList = new ArrayList<Car>();
+        List<Car> carList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM cars WHERE is_sold = 'N'", null);
 
         if (cursor.moveToFirst()) {
             do {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow("car_id"));
-                String make = cursor.getString(cursor.getColumnIndexOrThrow("manufacturer"));
-                String model = cursor.getString(cursor.getColumnIndexOrThrow("model_name"));
-                int year = cursor.getInt(cursor.getColumnIndexOrThrow("car_year"));
-                String color = cursor.getString(cursor.getColumnIndexOrThrow("color"));
-                double price = cursor.getDouble(cursor.getColumnIndexOrThrow("selling_price"));
-                int mileage = cursor.getInt(cursor.getColumnIndexOrThrow("mileage"));
-                String trans = cursor.getString(cursor.getColumnIndexOrThrow("transmission_type"));
-                String cond = cursor.getString(cursor.getColumnIndexOrThrow("car_condition"));
-                String vin = cursor.getString(cursor.getColumnIndexOrThrow("vin_number"));
-                String notes = cursor.getString(cursor.getColumnIndexOrThrow("notes"));
-                String img = cursor.getString(cursor.getColumnIndexOrThrow("image_uri"));
-                int fav = cursor.getInt(cursor.getColumnIndexOrThrow("is_favorite"));
-
-                carList.add(new Car(id, make, model, year, color, price, mileage, trans, cond, vin, notes, img, fav));
+                carList.add(mapCursorToCar(cursor));
             } while (cursor.moveToNext());
         }
         cursor.close();
         return carList;
+    }
+    private Car mapCursorToCar(Cursor cursor) {
+        int id = cursor.getInt(cursor.getColumnIndexOrThrow("car_id"));
+        String make = cursor.getString(cursor.getColumnIndexOrThrow("manufacturer"));
+        String model = cursor.getString(cursor.getColumnIndexOrThrow("model_name"));
+        int year = cursor.getInt(cursor.getColumnIndexOrThrow("car_year"));
+        String color = cursor.getString(cursor.getColumnIndexOrThrow("color"));
+        double price = cursor.getDouble(cursor.getColumnIndexOrThrow("selling_price"));
+        int mileage = cursor.getInt(cursor.getColumnIndexOrThrow("mileage"));
+        String trans = cursor.getString(cursor.getColumnIndexOrThrow("transmission_type"));
+        String cond = cursor.getString(cursor.getColumnIndexOrThrow("car_condition"));
+        String vin = cursor.getString(cursor.getColumnIndexOrThrow("vin_number"));
+        String notes = cursor.getString(cursor.getColumnIndexOrThrow("notes"));
+        String img = cursor.getString(cursor.getColumnIndexOrThrow("image_uri"));
+        int fav = cursor.getInt(cursor.getColumnIndexOrThrow("is_favorite"));
+
+        return new Car(id, make, model, year, color, price, mileage, trans, cond, vin, notes, img, fav);
     }
 
     public boolean checkUserCredentials(String username, String password) {
@@ -170,6 +171,16 @@ public class DatabaseManager {
         boolean exists = (cursor.getCount() > 0);
         cursor.close();
         return exists;
+    }
+    public int getUserId(String username) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        int userId = -1;
+        Cursor cursor = db.rawQuery("SELECT user_id FROM system_users WHERE username = ?", new String[]{username});
+        if (cursor.moveToFirst()) {
+            userId = cursor.getInt(0);
+        }
+        cursor.close();
+        return userId;
     }
 
     public boolean isUsernameTaken(String username) {
