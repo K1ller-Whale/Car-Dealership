@@ -47,8 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if (dbManager.checkUserCredentials(username, password)) {
-            String role = dbManager.getUserRole(username);
-            sessionManager.createLoginSession(username, role);
+            sessionManager.createLoginSession(username);
 
             Toast.makeText(this, R.string.success_login, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, MainActivity.class));

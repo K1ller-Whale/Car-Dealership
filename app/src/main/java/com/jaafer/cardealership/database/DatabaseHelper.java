@@ -8,9 +8,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "Dealership.db";
     private static final int DATABASE_VERSION = 1;
-
-    public static final String TABLE_CARS = "cars";
-
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -18,7 +15,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
-        // CRITICAL: Enable Foreign Key constraints for relational integrity
         db.setForeignKeyConstraintsEnabled(true);
     }
 
@@ -38,31 +34,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "effective_date TEXT DEFAULT CURRENT_TIMESTAMP, " +
                 "modified_date TEXT DEFAULT CURRENT_TIMESTAMP)");
 
-        // 2. Employees
-        db.execSQL("CREATE TABLE employees (" +
-                "employee_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "employee_name TEXT NOT NULL, " +
-                "national_id TEXT UNIQUE NOT NULL, " +
-                "phone_number TEXT NOT NULL, " +
-                "address TEXT, " +
-                "hire_date TEXT DEFAULT CURRENT_TIMESTAMP, " +
-                "base_salary REAL NOT NULL, " +
-                "is_active TEXT DEFAULT 'Y', " +
-                "created_date TEXT DEFAULT CURRENT_TIMESTAMP)");
-
-        // 3. Customers
+        // 2. Customers
         db.execSQL("CREATE TABLE customers (" +
                 "customer_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "customer_name TEXT NOT NULL, " +
                 "national_id TEXT UNIQUE NOT NULL, " +
                 "phone_number TEXT NOT NULL, " +
-                "address TEXT, " +
                 "occupation TEXT, " +
                 "total_transactions INTEGER DEFAULT 0, " +
                 "is_loyal_customer TEXT DEFAULT 'N', " +
                 "registration_date TEXT DEFAULT CURRENT_TIMESTAMP)");
 
-        // 4. Cars (Expanded to match Diagram + added image_uri/is_favorite)
+        // 3. Cars
         db.execSQL("CREATE TABLE cars (" +
                 "car_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "manufacturer TEXT NOT NULL, " +
@@ -86,32 +69,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "image_uri TEXT, " + // App specific
                 "is_favorite INTEGER DEFAULT 0)"); // App specific
 
-        // 5. Users
+        // 4. Users
         db.execSQL("CREATE TABLE system_users (" +
                 "user_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "username TEXT UNIQUE NOT NULL, " +
                 "password_hash TEXT NOT NULL, " +
-                "user_role TEXT NOT NULL, " +
-                "employee_id INTEGER, " +
+                "customer_id INTEGER, " +
                 "is_active TEXT DEFAULT 'Y', " +
                 "created_date TEXT DEFAULT CURRENT_TIMESTAMP, " +
                 "last_login TEXT, " +
                 "password_reset_req TEXT DEFAULT 'N', " +
-                "FOREIGN KEY(employee_id) REFERENCES employees(employee_id))");
+                "FOREIGN KEY(customer_id) REFERENCES customers(customer_id))");
 
-        // 6. Contracts
+        // 5. Contracts
         db.execSQL("CREATE TABLE sales_contracts (" +
                 "contract_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "contract_number TEXT UNIQUE NOT NULL, " +
                 "customer_id INTEGER NOT NULL, " +
                 "car_id INTEGER NOT NULL, " +
-                "employee_id INTEGER NOT NULL, " +
                 "sale_date TEXT DEFAULT CURRENT_TIMESTAMP, " +
                 "payment_type TEXT NOT NULL, " +
                 "original_price REAL NOT NULL, " +
                 "discount_amount REAL DEFAULT 0, " +
                 "final_price REAL NOT NULL, " +
-                "employee_commission REAL, " +
                 "down_payment REAL, " +
                 "remaining_amount REAL, " +
                 "installment_months INTEGER, " +
@@ -119,10 +99,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "contract_status TEXT DEFAULT 'Active', " +
                 "notes TEXT, " +
                 "FOREIGN KEY(customer_id) REFERENCES customers(customer_id), " +
-                "FOREIGN KEY(car_id) REFERENCES cars(car_id), " +
-                "FOREIGN KEY(employee_id) REFERENCES employees(employee_id))");
+                "FOREIGN KEY(car_id) REFERENCES cars(car_id))");
 
-        // 7. Installments
+        // 6. Installments
         db.execSQL("CREATE TABLE installment_payments (" +
                 "payment_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "contract_id INTEGER NOT NULL, " +
@@ -148,7 +127,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS system_users");
         db.execSQL("DROP TABLE IF EXISTS cars");
         db.execSQL("DROP TABLE IF EXISTS customers");
-        db.execSQL("DROP TABLE IF EXISTS employees");
         db.execSQL("DROP TABLE IF EXISTS system_settings");
         onCreate(db);
     }
