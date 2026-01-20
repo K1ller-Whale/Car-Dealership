@@ -54,8 +54,8 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.error_username_taken, Toast.LENGTH_SHORT).show();
             return;
         }
-        //TODO: remember to make the role dynamic
-        if (dbManager.registerUser(username, password)) {
+        //TODO: Replace "", "" with actual text fields
+        if (dbManager.registerUser(username, password, "", "")) {
             Toast.makeText(this, R.string.success_registration, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
