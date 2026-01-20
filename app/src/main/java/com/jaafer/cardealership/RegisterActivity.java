@@ -11,7 +11,7 @@ import com.jaafer.cardealership.database.DatabaseManager;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText etUsername, etPassword, etConfirm;
+    private EditText etUsername, etPassword, etConfirm, etNational, etPhone;
     private DatabaseManager dbManager;
 
     @Override
@@ -24,6 +24,8 @@ public class RegisterActivity extends AppCompatActivity {
         etUsername = findViewById(R.id.etUsernameReg);
         etPassword = findViewById(R.id.etPasswordReg);
         etConfirm = findViewById(R.id.etConfirmPassword);
+        etNational = findViewById(R.id.etNationalID);
+        etPhone = findViewById(R.id.etPhoneNumber);
         Button btnRegister = findViewById(R.id.btnRegister);
         TextView tvGoToLogin = findViewById(R.id.tvGoToLogin);
 
@@ -39,8 +41,10 @@ public class RegisterActivity extends AppCompatActivity {
         String username = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String confirm = etConfirm.getText().toString().trim();
+        String nationalID = etNational.getText().toString().trim();
+        String phoneNumber = etPhone.getText().toString().trim();
 
-        if (username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
+        if (username.isEmpty() || password.isEmpty() || confirm.isEmpty() || nationalID.isEmpty() || phoneNumber.isEmpty()) {
             Toast.makeText(this, R.string.error_empty_fields, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -54,8 +58,13 @@ public class RegisterActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.error_username_taken, Toast.LENGTH_SHORT).show();
             return;
         }
-        //TODO: Replace "", "" with actual text fields
-        if (dbManager.registerUser(username, password, "", "")) {
+
+        if (dbManager.isNationalIDTaken(nationalID)) {
+            Toast.makeText(this, R.string.error_username_taken, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (dbManager.registerUser(username, password, nationalID, phoneNumber)) {
             Toast.makeText(this, R.string.success_registration, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, LoginActivity.class));
             finish();

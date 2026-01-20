@@ -191,6 +191,14 @@ public class DatabaseManager {
         return exists;
     }
 
+    public boolean isNationalIDTaken(String nationalID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT customer_id FROM customers WHERE national_id = ?", new String[]{nationalID});
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
+    }
+
     public boolean registerUser(String username, String password, String nationalId, String phoneNumber) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();

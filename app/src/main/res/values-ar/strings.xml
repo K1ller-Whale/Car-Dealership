@@ -47,4 +47,6 @@
     <string name="role_sales">عضو مبيعات</string>
     <string name="btn_logout">تسجيل الخروج</string>
     <string name="welcome_message">اهلا بك</string>
+    <string name="hint_national_id">الرقم الوطني</string>
+    <string name="hint_phone_number">رقم الهاتف</string>
 </resources>
