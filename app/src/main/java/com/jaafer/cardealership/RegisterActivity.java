@@ -55,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
             return;
         }
         //TODO: remember to make the role dynamic
-        if (dbManager.registerUser(username, password, "Sales Staff")) {
+        if (dbManager.registerUser(username, password)) {
             Toast.makeText(this, R.string.success_registration, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, LoginActivity.class));
             finish();

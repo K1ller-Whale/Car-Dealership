@@ -11,7 +11,7 @@ import com.jaafer.cardealership.utils.SessionManager;
 public class MainActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
-    private TextView tvWelcome, tvRole;
+    private TextView tvWelcome;
     private Button btnLogout;
 
     @Override
@@ -26,15 +26,12 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         tvWelcome = findViewById(R.id.tvWelcome);
-        tvRole = findViewById(R.id.tvRole);
         btnLogout = findViewById(R.id.btnLogout);
 
         SharedPreferences pref = getSharedPreferences("DealershipSession", MODE_PRIVATE);
         String username = pref.getString("username", "User");
-        String role = pref.getString("userRole", "Staff");
 
         tvWelcome.setText(getString(R.string.welcome_message, username));
-        tvRole.setText(getString(R.string.role_display, role));
         btnLogout.setOnClickListener(v -> logout());
     }
 

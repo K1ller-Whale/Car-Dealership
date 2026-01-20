@@ -66,17 +66,6 @@ public class DatabaseManager {
         return exists;
     }
 
-    public String getUserRole(String username) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String role = "";
-        Cursor cursor = db.rawQuery("SELECT user_role FROM system_users WHERE username = ?", new String[]{username});
-        if (cursor.moveToFirst()) {
-            role = cursor.getString(0);
-        }
-        cursor.close();
-        return role;
-    }
-
     public boolean isUsernameTaken(String username) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT user_id FROM system_users WHERE username = ?", new String[]{username});
@@ -84,24 +73,22 @@ public class DatabaseManager {
         cursor.close();
         return exists;
     }
-    public boolean registerUser(String username, String password, String role) {
+    public boolean registerUser(String username, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
-            ContentValues empValues = new ContentValues();
-            empValues.put("employee_name", username); // Use username as name for now
-            empValues.put("national_id", UUID.randomUUID().toString().substring(0, 15)); // Random ID
-            empValues.put("phone_number", "0000000000");
-            empValues.put("base_salary", 0);
+            ContentValues customerValues = new ContentValues();
+            customerValues.put("customer_name", username); // Use username as name for now
+            customerValues.put("national_id", UUID.randomUUID().toString().substring(0, 15)); // Random ID
+            customerValues.put("phone_number", "0000000000");
 
-            long empId = db.insertOrThrow("employees", null, empValues);
+            long customerId = db.insertOrThrow("customers", null, customerValues);
 
             // 2. Create User record linked to that employee
             ContentValues userValues = new ContentValues();
             userValues.put("username", username);
             userValues.put("password_hash", SecurityUtils.hashPassword(password));
-            userValues.put("user_role", role);
-            userValues.put("employee_id", empId);
+            userValues.put("customer_id", customerId);
             userValues.put("is_active", "Y");
 
             db.insertOrThrow("system_users", null, userValues);

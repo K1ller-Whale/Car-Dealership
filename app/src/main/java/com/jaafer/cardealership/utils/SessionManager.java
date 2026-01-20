@@ -17,10 +17,9 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public void createLoginSession(String username, String role) {
+    public void createLoginSession(String username) {
         editor.putBoolean(KEY_IS_LOGGED_IN, true);
         editor.putString(KEY_USERNAME, username);
-        editor.putString(KEY_ROLE, role);
         editor.apply();
     }
 
