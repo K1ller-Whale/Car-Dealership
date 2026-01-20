@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ProfileOptionView">
+        <attr name="optionTitle" format="string" />
+        <attr name="optionIcon" format="reference" />
+    </declare-styleable>
+</resources>
