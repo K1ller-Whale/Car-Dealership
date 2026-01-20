@@ -4,7 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.jaafer.cardealership.models.User;
 import com.jaafer.cardealership.utils.SecurityUtils;
+
+import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 
 import com.jaafer.cardealership.models.Car;
@@ -23,8 +28,112 @@ public class DatabaseManager {
         dbHelper.getWritableDatabase();
     }
 
+    public User retrieveUserProfileInfo(int userID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        User user = null;
+
+        String query = "SELECT * FROM customers WHERE customer_id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userID)});
+
+        if (cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow("customer_id"));
+            String name = cursor.getString(cursor.getColumnIndexOrThrow("customer_name"));
+            String nationalId = cursor.getString(cursor.getColumnIndexOrThrow("national_id"));
+            String phone = cursor.getString(cursor.getColumnIndexOrThrow("phone_number"));
+            String occupation = cursor.getString(cursor.getColumnIndexOrThrow("occupation"));
+
+            user = new User(id, name, nationalId, phone, occupation);
+        }
+
+        cursor.close();
+        return user;
+    }
+
+    public boolean buyCar(int carID, int customerID) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            String priceQuery = "SELECT selling_price FROM cars WHERE car_id = ? AND is_sold = 'N'";
+            Cursor cursor = db.rawQuery(priceQuery, new String[]{String.valueOf(carID)});
+            if (!cursor.moveToFirst()) {
+                cursor.close();
+                return false;
+            }
+            double price = cursor.getDouble(cursor.getColumnIndexOrThrow("selling_price"));
+            cursor.close();
+
+            ContentValues carValues = new ContentValues();
+            carValues.put("is_sold", "Y");
+            String currentTimestamp = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(new java.util.Date());
+            carValues.put("sold_date", currentTimestamp);
+
+            int rowsAffected = db.update("cars", carValues, "car_id = ?", new String[]{String.valueOf(carID)});
+            if (rowsAffected == 0) {
+                return false;
+            }
+            ContentValues contractValues = new ContentValues();
+            contractValues.put("contract_number", "CNT-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+            contractValues.put("customer_id", customerID);
+            contractValues.put("car_id", carID);
+            contractValues.put("sale_date", currentTimestamp);
+            contractValues.put("payment_type", "Cash");
+            contractValues.put("original_price", price);
+            contractValues.put("final_price", price);
+            contractValues.put("contract_status", "Completed");
+
+            db.insertOrThrow("sales_contracts", null, contractValues);
+            db.setTransactionSuccessful();
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public List<Car> getFiveCars() {
+        List<Car> allCars = new ArrayList<Car>(getAllCars());
+        Collections.shuffle(allCars);
+
+        return allCars.subList(0, 5);
+    }
+
+    public List<Car> getAllCarsByCustomerID(String customerId) {
+        List<Car> carHistory = new ArrayList<Car>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT c.* FROM " + "cars" + " c " +
+                "INNER JOIN sales_contracts sc ON c.car_id = sc.car_id " +
+                "WHERE sc.customer_id = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(customerId)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("car_id"));
+                String make = cursor.getString(cursor.getColumnIndexOrThrow("manufacturer"));
+                String model = cursor.getString(cursor.getColumnIndexOrThrow("model_name"));
+                int year = cursor.getInt(cursor.getColumnIndexOrThrow("car_year"));
+                String color = cursor.getString(cursor.getColumnIndexOrThrow("color"));
+                double price = cursor.getDouble(cursor.getColumnIndexOrThrow("selling_price"));
+                int mileage = cursor.getInt(cursor.getColumnIndexOrThrow("mileage"));
+                String trans = cursor.getString(cursor.getColumnIndexOrThrow("transmission_type"));
+                String cond = cursor.getString(cursor.getColumnIndexOrThrow("car_condition"));
+                String vin = cursor.getString(cursor.getColumnIndexOrThrow("vin_number"));
+                String notes = cursor.getString(cursor.getColumnIndexOrThrow("notes"));
+                String img = cursor.getString(cursor.getColumnIndexOrThrow("image_uri"));
+                int fav = cursor.getInt(cursor.getColumnIndexOrThrow("is_favorite"));
+
+                carHistory.add(new Car(id, make, model, year, color, price, mileage, trans, cond, vin, notes, img, fav));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return carHistory;
+    }
+
     public List<Car> getAllCars() {
-        List<Car> carList = new ArrayList<>();
+        List<Car> carList = new ArrayList<Car>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM cars WHERE is_sold = 'N'", null);
@@ -52,12 +161,9 @@ public class DatabaseManager {
         return carList;
     }
 
-
     public boolean checkUserCredentials(String username, String password) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String hashedPassword = SecurityUtils.hashPassword(password);
-
-        // Query: Check if username exists and password matches hash
         String query = "SELECT * FROM system_users WHERE username = ? AND password_hash = ?";
         Cursor cursor = db.rawQuery(query, new String[]{username, hashedPassword});
 
@@ -73,18 +179,18 @@ public class DatabaseManager {
         cursor.close();
         return exists;
     }
-    public boolean registerUser(String username, String password) {
+
+    public boolean registerUser(String username, String password, String nationalId, String phoneNumber) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
         try {
             ContentValues customerValues = new ContentValues();
-            customerValues.put("customer_name", username); // Use username as name for now
-            customerValues.put("national_id", UUID.randomUUID().toString().substring(0, 15)); // Random ID
-            customerValues.put("phone_number", "0000000000");
+            customerValues.put("customer_name", username);
+            customerValues.put("national_id", nationalId);
+            customerValues.put("phone_number", phoneNumber);
 
             long customerId = db.insertOrThrow("customers", null, customerValues);
 
-            // 2. Create User record linked to that employee
             ContentValues userValues = new ContentValues();
             userValues.put("username", username);
             userValues.put("password_hash", SecurityUtils.hashPassword(password));
@@ -102,6 +208,7 @@ public class DatabaseManager {
             db.endTransaction();
         }
     }
+
     public void insertDummyData() {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor c = db.rawQuery("SELECT count(*) FROM cars", null);
