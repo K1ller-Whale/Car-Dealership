@@ -4,28 +4,88 @@ public class Car {
     private int id;
     private String manufacturer;
     private String model;
+    private int year;
+    private String color;
     private double price;
-    private String condition; // "New" or "Used"
-    private String imageUri; // URL or File path
-    private int isFavorite; // 1 = true, 0 = false
+    private int mileage;
+    private String transmission;
+    private String condition;
+    private String vin;
+    private String description;
+    private String imageUri;
+    private int isFavorite;
 
-    // Constructor
-    public Car(int id, String manufacturer, String model, double price, String condition, String imageUri, int isFavorite) {
+    public Car(int id, String manufacturer, String model, int year, String color,
+               double price, int mileage, String transmission, String condition,
+               String vin, String description, String imageUri, int isFavorite) {
         this.id = id;
         this.manufacturer = manufacturer;
         this.model = model;
+        this.year = year;
+        this.color = color;
         this.price = price;
+        this.mileage = mileage;
+        this.transmission = transmission;
         this.condition = condition;
+        this.vin = vin;
+        this.description = description;
         this.imageUri = imageUri;
         this.isFavorite = isFavorite;
     }
 
-    // Getters
-    public int getId() { return id; }
-    public String getManufacturer() { return manufacturer; }
-    public String getModel() { return model; }
-    public double getPrice() { return price; }
-    public String getCondition() { return condition; }
-    public String getImageUri() { return imageUri; }
-    public boolean isFavorite() { return isFavorite == 1; }
+    public int getId() {
+        return id;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public int getMileage() {
+        return mileage;
+    }
+
+    public String getTransmission() {
+        return transmission;
+    }
+
+    public String getCondition() {
+        return condition;
+    }
+
+    public String getVin() {
+        return vin;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImageUri() {
+        return imageUri;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite == 1;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.isFavorite = favorite ? 1 : 0;
+    }
 }
