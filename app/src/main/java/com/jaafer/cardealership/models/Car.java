@@ -4,14 +4,14 @@ public class Car {
     private int id;
     private String manufacturer;
     private String model;
-    private int year; // Added
-    private String color; // Added
+    private int year;
+    private String color;
     private double price;
-    private int mileage; // Added
-    private String transmission; // Added
+    private int mileage;
+    private String transmission;
     private String condition;
-    private String vin; // Added
-    private String description; // Map to 'notes'
+    private String vin;
+    private String description;
     private String imageUri;
     private int isFavorite;
 
