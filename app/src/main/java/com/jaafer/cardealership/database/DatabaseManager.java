@@ -325,7 +325,7 @@ public class DatabaseManager {
         values.put("selling_price", price);
         values.put("mileage", miles);
         values.put("vin_number", vin);
-        values.put("is_sold", "N"); // Default is not sold
+        values.put("is_sold", "N");
         values.put("notes", notes);
         values.put("image_uri", img);
 

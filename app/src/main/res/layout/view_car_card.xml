@@ -5,64 +5,82 @@
     android:id="@+id/cardContainer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="4dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="6dp"
     app:cardBackgroundColor="@color/white"
-    android:focusable="true">
+    app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="12dp">
+        android:paddingBottom="16dp">
+
         <ImageView
             android:id="@+id/imgCar"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="200dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_home"
+            android:contentDescription="Car image"
+            android:clickable="false"
+            android:focusable="false"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tvCarTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:text="BMW X5"
             android:textColor="@color/deep_indigo"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
+            android:letterSpacing="0.01"
             android:ellipsize="end"
             android:maxLines="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imgCar" />
-        <TextView
-            android:id="@+id/tvCarPrice"
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:id="@+id/layoutPriceCondition"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="$ 55,000"
-            android:textColor="@color/royal_purple"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@id/tvCarTitle"
-            app:layout_constraintTop_toBottomOf="@id/tvCarTitle" />
-        <TextView
-            android:id="@+id/tvCarCondition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Used"
-            android:textSize="12sp"
-            android:textColor="@color/slate_purple"
-            android:background="@drawable/bg_input_field"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="2dp"
-            android:layout_marginEnd="12dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/tvCarPrice"
-            app:layout_constraintTop_toTopOf="@id/tvCarPrice"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintTop_toBottomOf="@id/tvCarTitle">
+
+            <TextView
+                android:id="@+id/tvCarPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="$ 55,000"
+                android:textColor="@color/royal_purple"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvCarCondition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Used"
+                android:textSize="12sp"
+                android:textColor="@color/white"
+                android:background="@drawable/bg_condition_badge"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
