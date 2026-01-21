@@ -25,30 +25,6 @@ public class DatabaseManager {
         dbHelper.getWritableDatabase();
     }
 
-    public User retrieveUserProfileInfo(int systemUserID) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        User user = null;
-
-        String query = "SELECT c.* FROM customers c " +
-                "INNER JOIN system_users u ON c.customer_id = u.customer_id " +
-                "WHERE u.user_id = ?";
-
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(systemUserID)});
-
-        if (cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow("customer_id"));
-            String name = cursor.getString(cursor.getColumnIndexOrThrow("customer_name"));
-            String nationalId = cursor.getString(cursor.getColumnIndexOrThrow("national_id"));
-            String phone = cursor.getString(cursor.getColumnIndexOrThrow("phone_number"));
-            String occupation = cursor.getString(cursor.getColumnIndexOrThrow("occupation"));
-
-            user = new User(id, name, nationalId, phone, occupation);
-        }
-
-        cursor.close();
-        return user;
-    }
-
     public int getCustomerIdFromUserId(int systemUserID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         int customerId = -1;

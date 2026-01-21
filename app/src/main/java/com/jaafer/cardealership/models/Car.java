@@ -1,20 +1,20 @@
 package com.jaafer.cardealership.models;
 
 public class Car {
-    private int id;
-    private String manufacturer;
-    private String model;
-    private int year;
-    private String color;
-    private double price;
-    private int mileage;
-    private String transmission;
-    private String condition;
-    private String vin;
-    private String description;
-    private String imageUri;
+    private final int id;
+    private final String manufacturer;
+    private final String model;
+    private final int year;
+    private final String color;
+    private final double price;
+    private final int mileage;
+    private final String transmission;
+    private final String condition;
+    private final String vin;
+    private final String description;
+    private final String imageUri;
     private int isFavorite;
-    private boolean isSold;
+    private final boolean isSold;
 
     public Car(int id, String manufacturer, String model, int year, String color,
                double price, int mileage, String transmission, String condition,

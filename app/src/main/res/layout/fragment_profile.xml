@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.jaafer.cardealership.components.ProfileOptionView
+                <com.jaafer.cardealership.ui.components.ProfileOptionView
                     android:id="@+id/optTheme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                     android:layout_marginEnd="16dp"
                     android:background="@color/pale_lavender" />
 
-                <com.jaafer.cardealership.components.ProfileOptionView
+                <com.jaafer.cardealership.ui.components.ProfileOptionView
                     android:id="@+id/optLanguage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -116,7 +116,7 @@
                     android:layout_marginEnd="16dp"
                     android:background="@color/pale_lavender" />
 
-                <com.jaafer.cardealership.components.ProfileOptionView
+                <com.jaafer.cardealership.ui.components.ProfileOptionView
                     android:id="@+id/optLogout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

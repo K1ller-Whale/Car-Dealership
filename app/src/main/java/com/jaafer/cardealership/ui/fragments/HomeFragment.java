@@ -1,4 +1,4 @@
-package com.jaafer.cardealership.fragments;
+package com.jaafer.cardealership.ui.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.jaafer.cardealership.AllCarsActivity;
-import com.jaafer.cardealership.CarDetailsActivity;
+import com.jaafer.cardealership.ui.activities.AllCarsActivity;
+import com.jaafer.cardealership.ui.activities.CarDetailsActivity;
 import com.jaafer.cardealership.R;
 import com.jaafer.cardealership.adapters.AdBannerAdapter;
 import com.jaafer.cardealership.adapters.CarAdapter;

@@ -1,4 +1,4 @@
-package com.jaafer.cardealership.components;
+package com.jaafer.cardealership.ui.components;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -34,8 +34,6 @@ public class CarCardView extends MaterialCardView {
         tvTitle = findViewById(R.id.tvCarTitle);
         tvPrice = findViewById(R.id.tvCarPrice);
         tvCondition = findViewById(R.id.tvCarCondition);
-        
-        // Ensure the card can receive clicks
         setClickable(true);
         setFocusable(true);
     }

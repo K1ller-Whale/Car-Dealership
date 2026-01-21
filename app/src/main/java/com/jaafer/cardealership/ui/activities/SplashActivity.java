@@ -1,10 +1,12 @@
-package com.jaafer.cardealership;
+package com.jaafer.cardealership.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.jaafer.cardealership.MainActivity;
+import com.jaafer.cardealership.R;
 import com.jaafer.cardealership.database.DatabaseManager;
 import com.jaafer.cardealership.utils.SessionManager;
 

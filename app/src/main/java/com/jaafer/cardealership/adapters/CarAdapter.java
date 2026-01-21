@@ -1,11 +1,11 @@
 package com.jaafer.cardealership.adapters;
 
 import android.view.ViewGroup;
-import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.jaafer.cardealership.components.CarCardView;
+import com.jaafer.cardealership.ui.components.CarCardView;
 import com.jaafer.cardealership.models.Car;
 
 import java.util.List;
@@ -32,9 +32,6 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
         ));
-//        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) carCardView.getLayoutParams();
-//        layoutParams.setMargins(0, 0, 0, 24);
-
         return new CarViewHolder(carCardView);
     }
 

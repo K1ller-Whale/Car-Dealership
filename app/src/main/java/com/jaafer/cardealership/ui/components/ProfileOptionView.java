@@ -1,4 +1,4 @@
-package com.jaafer.cardealership.components;
+package com.jaafer.cardealership.ui.components;
 
 import android.content.Context;
 import android.content.res.TypedArray;
