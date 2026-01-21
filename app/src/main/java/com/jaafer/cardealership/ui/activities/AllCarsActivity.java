@@ -1,4 +1,4 @@
-package com.jaafer.cardealership;
+package com.jaafer.cardealership.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.jaafer.cardealership.R;
 import com.jaafer.cardealership.adapters.CarAdapter;
 import com.jaafer.cardealership.database.DatabaseManager;
 import com.jaafer.cardealership.models.Car;

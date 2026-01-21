@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CarDealership">
         <activity
-            android:name=".CarDetailsActivity"
+            android:name=".ui.activities.CarDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,16 +24,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".ui.activities.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".AllCarsActivity"
+            android:name=".ui.activities.AllCarsActivity"
             android:exported="false" />
     </application>
 

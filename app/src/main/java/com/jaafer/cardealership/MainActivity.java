@@ -10,12 +10,11 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.jaafer.cardealership.fragments.HistoryFragment;
-import com.jaafer.cardealership.fragments.HomeFragment;
-import com.jaafer.cardealership.fragments.ProfileFragment;
+import com.jaafer.cardealership.ui.activities.LoginActivity;
+import com.jaafer.cardealership.ui.fragments.HistoryFragment;
+import com.jaafer.cardealership.ui.fragments.HomeFragment;
+import com.jaafer.cardealership.ui.fragments.ProfileFragment;
 import com.jaafer.cardealership.utils.SessionManager;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         int savedTheme = settings.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_NO);
         AppCompatDelegate.setDefaultNightMode(savedTheme);
         String lang = settings.getString("app_lang", "en");
-        com.jaafer.cardealership.fragments.ProfileFragment.setAppLocale(this, lang);
+        ProfileFragment.setAppLocale(this, lang);
         setContentView(R.layout.activity_main);
         sessionManager = new SessionManager(this);
         if (!sessionManager.isLoggedIn()) {
