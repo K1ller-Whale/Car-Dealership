@@ -10,14 +10,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jaafer.cardealership.fragments.HistoryFragment;
 import com.jaafer.cardealership.fragments.HomeFragment;
 import com.jaafer.cardealership.fragments.ProfileFragment;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.jaafer.cardealership.adapters.CarAdapter;
-import com.jaafer.cardealership.database.DatabaseManager;
-import com.jaafer.cardealership.models.Car;
 import com.jaafer.cardealership.utils.SessionManager;
 
 import java.util.List;
@@ -40,11 +32,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
-
-        // Load Home Fragment by default
         loadFragment(new HomeFragment());
-
-        // Handle Navigation Clicks
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment selectedFragment = null;
             int id = item.getItemId();

@@ -228,6 +228,20 @@ public class DatabaseManager {
         }
     }
 
+    public Car getCarById(int carId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Car car = null;
+
+        String query = "SELECT * FROM cars WHERE car_id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(carId)});
+
+        if (cursor.moveToFirst()) {
+            car = mapCursorToCar(cursor);
+        }
+        cursor.close();
+        return car;
+    }
+
     public void insertDummyData() {
         try {
             SQLiteDatabase db = dbHelper.getWritableDatabase();

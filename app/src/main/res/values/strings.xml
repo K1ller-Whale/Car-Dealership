@@ -49,4 +49,15 @@
     <string name="hint_national_id">National ID</string>
     <string name="hint_phone_number">Phone Number</string>
     <string name="all_cars">All Cars</string>
+    <string name="lbl_price">Price</string>
+    <string name="lbl_year">Year</string>
+    <string name="lbl_mileage">Mileage</string>
+    <string name="lbl_transmission">Transmission</string>
+    <string name="lbl_fuel">Fuel Type</string>
+    <string name="lbl_vin" translatable="false">VIN</string>
+    <string name="lbl_description">Description</string>
+    <string name="btn_sold">Sold Out</string>
+    <string name="msg_purchase_success">Congratulations! Car purchased successfully.</string>
+    <string name="msg_purchase_fail">Purchase failed. Car may be unavailable.</string>
+    <string name="unit_km">km</string>
 </resources>
