@@ -66,8 +66,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "mileage INTEGER, " +
                 "vin_number TEXT UNIQUE, " +
                 "notes TEXT, " +
-                "image_uri TEXT, " + // App specific
-                "is_favorite INTEGER DEFAULT 0)"); // App specific
+                "image_uri TEXT, " +
+                "is_favorite INTEGER DEFAULT 0)");
 
         // 4. Users
         db.execSQL("CREATE TABLE system_users (" +

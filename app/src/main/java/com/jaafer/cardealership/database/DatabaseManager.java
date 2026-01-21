@@ -191,6 +191,14 @@ public class DatabaseManager {
         return exists;
     }
 
+    public boolean isNationalIDTaken(String nationalID) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT customer_id FROM customers WHERE national_id = ?", new String[]{nationalID});
+        boolean exists = (cursor.getCount() > 0);
+        cursor.close();
+        return exists;
+    }
+
     public boolean registerUser(String username, String password, String nationalId, String phoneNumber) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
@@ -221,42 +229,87 @@ public class DatabaseManager {
     }
 
     public void insertDummyData() {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        Cursor c = db.rawQuery("SELECT count(*) FROM cars", null);
-        c.moveToFirst();
-        if (c.getInt(0) == 0) {
-            ContentValues values = new ContentValues();
-            values.put("manufacturer", "BMW");
-            values.put("model_name", "X5");
-            values.put("car_year", 2022);
-            values.put("color", "Black");
-            values.put("engine_capacity", 3.0);
-            values.put("transmission_type", "Automatic");
-            values.put("car_condition", "Used");
-            values.put("selling_price", 55000);
-            values.put("mileage", 12000);
-            values.put("vin_number", "123ABC456DEF789GH");
-            values.put("is_sold", "N");
-            values.put("notes", "Excellent condition, one previous owner.");
-            values.put("image_uri", "https://upload.wikimedia.org/wikipedia/commons/1/1d/BMW_X5_%28G05%29_IMG_3659.jpg");
-            db.insert("cars", null, values);
+        try {
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-            values.clear();
-            values.put("manufacturer", "Toyota");
-            values.put("model_name", "Camry");
-            values.put("car_year", 2024);
-            values.put("color", "White");
-            values.put("engine_capacity", 2.5);
-            values.put("transmission_type", "CVT");
-            values.put("car_condition", "New");
-            values.put("selling_price", 28000);
-            values.put("mileage", 0);
-            values.put("vin_number", "987ZYX654CBA321");
-            values.put("is_sold", "N");
-            values.put("notes", "Brand new, zero meter.");
-            values.put("image_uri", "https://upload.wikimedia.org/wikipedia/commons/a/ac/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg");
-            db.insert("cars", null, values);
+            Cursor c = db.rawQuery("SELECT count(*) FROM cars", null);
+            if (c != null) {
+                c.moveToFirst();
+                int count = c.getInt(0);
+                c.close();
+
+                if (count == 0) {
+                    db.beginTransaction();
+                    try {
+                        addCar(db, "BMW", "X5", 2022, "Black", 3.0, "Automatic", "Used", 55000, 12000, "123ABC456DEF789GH",
+                                "Excellent condition, one previous owner.",
+                                "https://upload.wikimedia.org/wikipedia/commons/1/1d/BMW_X5_%28G05%29_IMG_3659.jpg");
+
+                        addCar(db, "Toyota", "Camry", 2024, "White", 2.5, "CVT", "New", 28000, 0, "987ZYX654CBA321",
+                                "Brand new, zero meter.",
+                                "https://upload.wikimedia.org/wikipedia/commons/a/ac/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg");
+
+                        addCar(db, "Mercedes-Benz", "C-Class", 2023, "Silver", 2.0, "Automatic", "New", 48500, 0, "MER123BENZ456CLS",
+                                "Luxury interior, sunroof, full options.",
+                                "https://upload.wikimedia.org/wikipedia/commons/4/44/Mercedes-Benz_W206_IMG_6424.jpg");
+
+                        addCar(db, "Honda", "Civic", 2021, "Blue", 1.5, "CVT", "Used", 22000, 35000, "HON123CIV456VTEC",
+                                "Reliable daily driver, fuel efficient.",
+                                "https://upload.wikimedia.org/wikipedia/commons/3/36/2022_Honda_Civic_Sport_Touring_%28USA%29_front_view.jpg");
+
+                        addCar(db, "Ford", "Mustang GT", 2020, "Red", 5.0, "Manual", "Used", 35000, 25000, "FOR123MUS456PONY",
+                                "V8 Engine, loud exhaust, mint condition.",
+                                "https://upload.wikimedia.org/wikipedia/commons/d/d1/2018_Ford_Mustang_GT_5.0_facelift.jpg");
+
+                        addCar(db, "Tesla", "Model 3", 2023, "Grey", 0.0, "Automatic", "New", 42000, 0, "TES123MOD345ELEC",
+                                "Long Range, Autopilot included.",
+                                "https://upload.wikimedia.org/wikipedia/commons/9/91/2019_Tesla_Model_3_Performance_AWD_Front.jpg");
+
+                        addCar(db, "Audi", "Q7", 2019, "Black", 3.0, "Automatic", "Used", 40000, 55000, "AUD123Q7456QUAT",
+                                "7-seater SUV, leather seats, navigation.",
+                                "https://upload.wikimedia.org/wikipedia/commons/7/77/2015_Audi_Q7_S_Line_Quattro_3.0_Front.jpg");
+
+                        addCar(db, "Hyundai", "Tucson", 2024, "Dark Green", 2.5, "Automatic", "New", 31000, 0, "HYU123TUC456NEW",
+                                "Compact SUV, modern design, warranty active.",
+                                "https://upload.wikimedia.org/wikipedia/commons/2/22/2021_Hyundai_Tucson_Hybrid.jpg");
+
+                        addCar(db, "Chevrolet", "Tahoe", 2022, "White", 5.3, "Automatic", "Used", 58000, 15000, "CHE123TAH456BIG",
+                                "Large family SUV, towing package included.",
+                                "https://upload.wikimedia.org/wikipedia/commons/f/f3/2021_Chevrolet_Tahoe_High_Country_4WD.jpg");
+
+                        addCar(db, "Porsche", "911 Carrera", 2021, "Yellow", 3.0, "Automatic", "Used", 115000, 8000, "POR123911456SPD",
+                                "Sport chrono package, track ready.",
+                                "https://upload.wikimedia.org/wikipedia/commons/7/7a/Porsche_991_GT3_RS_%28991.2%29_IMG_2491.jpg");
+
+                        db.setTransactionSuccessful();
+                    } finally {
+                        db.endTransaction();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        c.close();
+    }
+
+    private void addCar(SQLiteDatabase db, String make, String model, int year, String color,
+                        double engine, String trans, String cond, double price, int miles,
+                        String vin, String notes, String img) {
+        ContentValues values = new ContentValues();
+        values.put("manufacturer", make);
+        values.put("model_name", model);
+        values.put("car_year", year);
+        values.put("color", color);
+        values.put("engine_capacity", engine);
+        values.put("transmission_type", trans);
+        values.put("car_condition", cond);
+        values.put("selling_price", price);
+        values.put("mileage", miles);
+        values.put("vin_number", vin);
+        values.put("is_sold", "N"); // Default is not sold
+        values.put("notes", notes);
+        values.put("image_uri", img);
+
+        db.insertOrThrow("cars", null, values);
     }
 }
