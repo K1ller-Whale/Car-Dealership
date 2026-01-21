@@ -3,6 +3,7 @@ package com.jaafer.cardealership;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -46,6 +47,14 @@ public class MainActivity extends AppCompatActivity {
 
             return loadFragment(selectedFragment);
         });
+
+        if (getIntent().hasExtra("navigate_to")) {
+            String dest = getIntent().getStringExtra("navigate_to");
+            if ("history".equals(dest)) {
+                bottomNav.setSelectedItemId(R.id.nav_history);
+                loadFragment(new HistoryFragment());
+            }
+        }
     }
 
     private boolean loadFragment(Fragment fragment) {

@@ -48,6 +48,7 @@ public class DatabaseManager {
         cursor.close();
         return user;
     }
+
     public int getCustomerIdFromUserId(int systemUserID) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         int customerId = -1;
@@ -144,6 +145,7 @@ public class DatabaseManager {
         cursor.close();
         return carList;
     }
+
     private Car mapCursorToCar(Cursor cursor) {
         int id = cursor.getInt(cursor.getColumnIndexOrThrow("car_id"));
         String make = cursor.getString(cursor.getColumnIndexOrThrow("manufacturer"));
@@ -158,8 +160,10 @@ public class DatabaseManager {
         String notes = cursor.getString(cursor.getColumnIndexOrThrow("notes"));
         String img = cursor.getString(cursor.getColumnIndexOrThrow("image_uri"));
         int fav = cursor.getInt(cursor.getColumnIndexOrThrow("is_favorite"));
+        String isSoldStr = cursor.getString(cursor.getColumnIndexOrThrow("is_sold"));
+        boolean isSold = "Y".equals(isSoldStr);
 
-        return new Car(id, make, model, year, color, price, mileage, trans, cond, vin, notes, img, fav);
+        return new Car(id, make, model, year, color, price, mileage, trans, cond, vin, notes, img, fav, isSold);
     }
 
     public boolean checkUserCredentials(String username, String password) {
@@ -172,6 +176,7 @@ public class DatabaseManager {
         cursor.close();
         return exists;
     }
+
     public int getUserId(String username) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         int userId = -1;
