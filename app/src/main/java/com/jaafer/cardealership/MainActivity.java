@@ -2,8 +2,14 @@ package com.jaafer.cardealership;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.jaafer.cardealership.fragments.HistoryFragment;
+import com.jaafer.cardealership.fragments.HomeFragment;
+import com.jaafer.cardealership.fragments.ProfileFragment;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -19,10 +25,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private SessionManager sessionManager;
-    private TextView tvWelcome;
-    private Button btnLogout;
-    private ListView listViewCars;
-    private DatabaseManager dbManager;
 
     @SuppressLint("StringFormatInvalid")
     @Override
@@ -31,38 +33,42 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         sessionManager = new SessionManager(this);
-        dbManager = new DatabaseManager(this);
-
         if (!sessionManager.isLoggedIn()) {
-            goToLogin();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
             return;
         }
-        tvWelcome = findViewById(R.id.tvWelcome);
-        btnLogout = findViewById(R.id.btnLogout);
-        listViewCars = findViewById(R.id.listview_cars);
-        SharedPreferences pref = getSharedPreferences("DealershipSession", MODE_PRIVATE);
-        String username = pref.getString("username", "User");
 
-        tvWelcome.setText(getString(R.string.welcome_message, username));
-        btnLogout.setOnClickListener(v -> logout());
-        loadCars();
+        BottomNavigationView bottomNav = findViewById(R.id.bottomNavigation);
+
+        // Load Home Fragment by default
+        loadFragment(new HomeFragment());
+
+        // Handle Navigation Clicks
+        bottomNav.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int id = item.getItemId();
+
+            if (id == R.id.nav_home) {
+                selectedFragment = new HomeFragment();
+            } else if (id == R.id.nav_history) {
+                selectedFragment = new HistoryFragment();
+            } else if (id == R.id.nav_profile) {
+                selectedFragment = new ProfileFragment();
+            }
+
+            return loadFragment(selectedFragment);
+        });
     }
 
-    private void loadCars() {
-        List<Car> allCars = dbManager.getAllCars();
-        CarAdapter adapter = new CarAdapter(this, allCars);
-        listViewCars.setAdapter(adapter);
-    }
-
-    private void logout() {
-        sessionManager.logoutUser();
-        goToLogin();
-    }
-
-    private void goToLogin() {
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
+    private boolean loadFragment(Fragment fragment) {
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
     }
 }
