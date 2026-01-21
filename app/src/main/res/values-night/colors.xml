@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="pale_lavender">#0A0B1A</color>
+    <color name="white">#1C1E45</color>
+    <color name="deep_indigo">#E9EAF5</color>
+    <color name="midnight_blue">#BFC0E2</color>
+    <color name="royal_purple">#6D70BA</color>
+    <color name="slate_purple">#9597CF</color>
+    <color name="black">#FFFFFFFF</color>
+    <color name="periwinkle">#2B2D65</color>
+    <color name="cool_purple">#9597CF</color>
+</resources>

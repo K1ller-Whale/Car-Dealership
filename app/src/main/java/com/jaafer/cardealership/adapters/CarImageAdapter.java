@@ -28,7 +28,10 @@ public class CarImageAdapter extends RecyclerView.Adapter<CarImageAdapter.ImgHol
 
     @Override
     public void onBindViewHolder(@NonNull ImgHolder holder, int position) {
-        Glide.with(context).load(urls.get(position)).placeholder(R.drawable.ic_launcher_background).into((ImageView) holder.itemView);
+        Glide.with(context)
+                .load(urls.get(position))
+                .placeholder(R.drawable.ic_car_placeholder)
+                .into((ImageView)holder.itemView);
     }
 
     @Override

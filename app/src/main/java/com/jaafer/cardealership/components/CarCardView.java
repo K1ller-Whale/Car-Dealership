@@ -46,8 +46,10 @@ public class CarCardView extends MaterialCardView {
             Glide.with(getContext())
                     .load(car.getImageUri())
                     .centerCrop()
-                    .placeholder(R.drawable.ic_home)
+                    .placeholder(R.drawable.ic_car_placeholder)
                     .into(imgCar);
+        } else {
+            imgCar.setImageResource(R.drawable.ic_car_placeholder);
         }
     }
 }

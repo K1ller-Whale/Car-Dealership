@@ -14,10 +14,11 @@ public class Car {
     private String description;
     private String imageUri;
     private int isFavorite;
+    private boolean isSold;
 
     public Car(int id, String manufacturer, String model, int year, String color,
                double price, int mileage, String transmission, String condition,
-               String vin, String description, String imageUri, int isFavorite) {
+               String vin, String description, String imageUri, int isFavorite, boolean isSold) {
         this.id = id;
         this.manufacturer = manufacturer;
         this.model = model;
@@ -31,6 +32,7 @@ public class Car {
         this.description = description;
         this.imageUri = imageUri;
         this.isFavorite = isFavorite;
+        this.isSold = isSold;
     }
 
     public int getId() {
@@ -83,6 +85,10 @@ public class Car {
 
     public boolean isFavorite() {
         return isFavorite == 1;
+    }
+
+    public boolean isSold() {
+        return isSold;
     }
 
     public void setFavorite(boolean favorite) {
