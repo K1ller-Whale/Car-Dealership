@@ -48,5 +48,5 @@
     <string name="msg_buy_success">Congratulations! You own this car.</string>
     <string name="hint_national_id">National ID</string>
     <string name="hint_phone_number">Phone Number</string>
-
+    <string name="all_cars">All Cars</string>
 </resources>

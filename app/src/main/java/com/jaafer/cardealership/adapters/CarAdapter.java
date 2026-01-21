@@ -1,54 +1,52 @@
 package com.jaafer.cardealership.adapters;
 
-import android.content.Context;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jaafer.cardealership.components.CarCardView;
 import com.jaafer.cardealership.models.Car;
 
 import java.util.List;
 
-public class CarAdapter extends BaseAdapter {
+public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
-    private final Context context;
     private final List<Car> carList;
 
-    public CarAdapter(Context context, List<Car> carList) {
-        this.context = context;
+    public CarAdapter(List<Car> carList) {
         this.carList = carList;
     }
 
+    @NonNull
     @Override
-    public int getCount() {
+    public CarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        CarCardView carCardView = new CarCardView(parent.getContext());
+
+        carCardView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
+
+        return new CarViewHolder(carCardView);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CarViewHolder holder, int position) {
+        Car currentCar = carList.get(position);
+        holder.carCardView.setData(currentCar);
+    }
+
+    @Override
+    public int getItemCount() {
         return carList.size();
     }
 
-    @Override
-    public Object getItem(int position) {
-        return carList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return carList.get(position).getId();
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public static class CarViewHolder extends RecyclerView.ViewHolder {
         CarCardView carCardView;
 
-        if (convertView == null) {
-            carCardView = new CarCardView(context);
-        } else {
-            carCardView = (CarCardView) convertView;
+        public CarViewHolder(@NonNull CarCardView itemView) {
+            super(itemView);
+            this.carCardView = itemView;
         }
-
-        Car currentCar = carList.get(position);
-
-        carCardView.setData(currentCar);
-
-        return carCardView;
     }
 }
