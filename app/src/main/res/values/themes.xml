@@ -6,6 +6,30 @@
         <item name="android:statusBarColor">@color/pale_lavender</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
+    <style name="SpecBox">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:background">@drawable/bg_input_field</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <style name="SpecLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/slate_purple</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="SpecValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/deep_indigo</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
     <style name="Theme.CarDealership" parent="Base.Theme.CarDealership" />
 </resources>

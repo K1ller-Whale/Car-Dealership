@@ -50,4 +50,14 @@
     <string name="hint_national_id">الرقم الوطني</string>
     <string name="hint_phone_number">رقم الهاتف</string>
     <string name="all_cars">جميع السيارات</string>
+    <string name="lbl_price">السعر</string>
+    <string name="lbl_year">السنة</string>
+    <string name="lbl_mileage">العداد</string>
+    <string name="lbl_transmission">الغيار</string>
+    <string name="lbl_fuel">نوع الوقود</string>
+    <string name="lbl_description">الوصف</string>
+    <string name="btn_sold">مباعة</string>
+    <string name="msg_purchase_success">مبروك قمت بشراء السيارة بنجاح</string>
+    <string name="msg_purchase_fail">السيارة غير متوفرة للبيع</string>
+    <string name="unit_km">كم</string>
 </resources>

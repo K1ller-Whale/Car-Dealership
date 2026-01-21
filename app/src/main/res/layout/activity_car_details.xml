@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pale_lavender">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@+id/footerContainer"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="24dp">
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/vpCarImages"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:background="@color/black" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="4dp"
+                android:text="1/1"
+                android:textColor="@color/slate_purple"
+                android:textSize="12sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    android:id="@+id/tvDetailTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="BMW X5"
+                    android:textColor="@color/deep_indigo"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDetailPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    tools:text="$55,000"
+                    android:textColor="@color/royal_purple"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvDetailCondition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    tools:text="Used - Excellent"
+                    android:background="@drawable/bg_input_field"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp"
+                    android:textColor="@color/slate_purple"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/lbl_description"
+                android:textColor="@color/deep_indigo"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:columnCount="2"
+                android:rowCount="2">
+
+                <LinearLayout style="@style/SpecBox">
+                    <TextView style="@style/SpecLabel" android:text="@string/lbl_year"/>
+                    <TextView android:id="@+id/tvSpecYear" style="@style/SpecValue" tools:text="2022"/>
+                </LinearLayout>
+
+                <LinearLayout style="@style/SpecBox">
+                    <TextView style="@style/SpecLabel" android:text="@string/lbl_mileage"/>
+                    <TextView android:id="@+id/tvSpecMileage" style="@style/SpecValue" tools:text="12000 km"/>
+                </LinearLayout>
+
+                <LinearLayout style="@style/SpecBox">
+                    <TextView style="@style/SpecLabel" android:text="@string/lbl_transmission"/>
+                    <TextView android:id="@+id/tvSpecTrans" style="@style/SpecValue" tools:text="Automatic"/>
+                </LinearLayout>
+
+                <LinearLayout style="@style/SpecBox">
+                    <TextView style="@style/SpecLabel" android:text="@string/lbl_vin"/>
+                    <TextView android:id="@+id/tvSpecVin" style="@style/SpecValue" tools:text="123ABC..."/>
+                </LinearLayout>
+            </GridLayout>
+
+            <TextView
+                android:id="@+id/tvDetailNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="8dp"
+                android:lineSpacingExtra="4dp"
+                android:text="Notes go here..."
+                android:textColor="@color/midnight_blue"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/footerContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="16dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/btnBuyNow"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:backgroundTint="@color/royal_purple"
+            android:text="@string/btn_buy_now"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

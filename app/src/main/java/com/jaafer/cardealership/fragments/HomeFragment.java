@@ -12,9 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jaafer.cardealership.AllCarsActivity;
-import com.jaafer.cardealership.LoginActivity;
+import com.jaafer.cardealership.CarDetailsActivity; // Make sure this is imported
 import com.jaafer.cardealership.R;
-import com.jaafer.cardealership.RegisterActivity;
 import com.jaafer.cardealership.adapters.CarAdapter;
 import com.jaafer.cardealership.database.DatabaseManager;
 import com.jaafer.cardealership.models.Car;
@@ -32,20 +31,23 @@ public class HomeFragment extends Fragment {
         View rootVew = inflater.inflate(R.layout.fragment_home, container, false);
 
         recyclerView = rootVew.findViewById(R.id.rvFeaturedCars);
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         databaseManager = new DatabaseManager(rootVew.getContext());
         List<Car> fiveCars = databaseManager.getFiveCars();
+        carAdapter = new CarAdapter(fiveCars, car -> {
+            Intent intent = new Intent(getContext(), CarDetailsActivity.class);
+            intent.putExtra("extra_car_id", car.getId());
+            startActivity(intent);
+        });
 
-        carAdapter = new CarAdapter(fiveCars);
         recyclerView.setAdapter(carAdapter);
+
         viewAllBtn = rootVew.findViewById(R.id.btnViewAll);
         viewAllBtn.setOnClickListener(view -> {
             startActivity(new Intent(rootVew.getContext(), AllCarsActivity.class));
         });
 
-
         return rootVew;
     }
-
 }
