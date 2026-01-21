@@ -26,7 +26,7 @@
     <string name="purchased_on">تاريخ الشراء: %s</string>
     <string name="profile_settings">الإعدادات</string>
     <string name="action_theme">تغيير المظهر</string>
-    <string name="action_language">الغة / Language</string>
+    <string name="action_language">اللغة</string>
     <string name="action_policies">السياسات والشروط</string>
     <string name="action_logout">تسجيل الخروج</string>
     <string name="spec_manufacturer">الشركة</string>
